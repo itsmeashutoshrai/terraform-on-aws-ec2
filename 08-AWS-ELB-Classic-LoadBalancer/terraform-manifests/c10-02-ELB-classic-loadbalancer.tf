@@ -5,11 +5,11 @@ module "elb" {
   version = "4.0.1"
   name = "${local.name}-myelb"
   subnets         = [
-    module.vpc.public_subnets[0],
+    module.vpc.public_subnets[0], #here we are creating 2 subnets then traffic comes at lb distribute on 2 subnets in different az''s
     module.vpc.public_subnets[1]
   ]
-  #internal        = false
-
+  #internal        = false  #because we are using external lb here
+#How the traffic will be routed from the LB to the targets(instances).
   listener = [
     {
       instance_port     = 80
