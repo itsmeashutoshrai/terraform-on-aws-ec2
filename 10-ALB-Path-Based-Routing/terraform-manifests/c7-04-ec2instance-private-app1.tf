@@ -19,5 +19,5 @@ module "ec2_private_app1" {
   subnet_id =  element(module.vpc.private_subnets, tonumber(each.key))
   vpc_security_group_ids = [module.private_sg.security_group_id]
 }
-
+ 
 
