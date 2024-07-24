@@ -29,7 +29,7 @@ module "vpc" {
 
 
   tags = local.common_tags
-  vpc_tags = local.common_tags
+  vpc_tags = local.common_tags 
 
   # Additional Tags to Subnets
   public_subnet_tags = {
