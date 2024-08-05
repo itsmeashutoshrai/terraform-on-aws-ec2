@@ -22,7 +22,7 @@ module "alb" {
       redirect = {
         port        = "443"
         protocol    = "HTTPS"
-        status_code = "HTTP_301"
+        status_code = "HTTP_301" #HTTP 301 (Moved Permanently).
       }    
     }# End my-http-https-redirect Listener
 
@@ -94,12 +94,15 @@ module "alb" {
           priority = 3
           actions = [{
             type        = "redirect"
-            status_code = "HTTP_302"
+            status_code = "HTTP_302" #HTTP_302 (Found)Temporary Redirect:
             host        = "stacksimplify.com"
             path        = "/aws-eks/"
             query       = ""
             protocol    = "HTTPS"
           }]
+          
+# The 302 status code suggests that the redirection is temporary and that the original URL should still be used for future requests.
+# Clients like browsers will typically follow the redirect to the new URL, but they will not update their bookmarks or cached URLs to the new location.
 
           conditions = [{
             query_string = {
@@ -129,7 +132,21 @@ module "alb" {
       }# End Rules    
     }# End Listener-2: my-https-listener
   }# End Listeners
+# priority: This defines the order in which the rule is evaluated. Lower numbers have higher priority.
 
+# actions:
+
+# type: The type of action to be performed, in this case, redirect.
+# status_code: The HTTP status code for the redirect, in this case, HTTP_302 (Found).
+# host: The host to which the request will be redirected, in this case, stacksimplify.com.
+# path: The path to which the request will be redirected, in this case, /azure-aks/azure-kubernetes-service-introduction/.
+# query: The query string to append to the redirect URL, in this case, an empty string ("").
+# protocol: The protocol to use for the redirect, in this case, HTTPS.
+# conditions:
+
+# host_header: The condition that triggers the redirect.
+# values: The values of the host header that should trigger the redirect, in this case, ["azure-aks11.devopsincloud.com"].
+# This rule will redirect any request with the host header azure-aks11.devopsincloud.com to https://stacksimplify.com/azure-aks/azure-kubernetes-service-introduction/ with a 302 status code.
 # Target Groups
   target_groups = {
   # Target Group-1: mytg1    
