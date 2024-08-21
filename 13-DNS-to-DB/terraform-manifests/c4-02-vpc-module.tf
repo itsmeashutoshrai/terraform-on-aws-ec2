@@ -5,7 +5,8 @@ module "vpc" {
   #version = "3.0.0"
   version = "5.4.0"
 
-  # VPC Basic Details
+  # VPC Basic Details 
+  # Network Configuration:
   name = "${local.name}-${var.vpc_name}"
   cidr = var.vpc_cidr_block
   azs             = var.vpc_availability_zones
@@ -24,10 +25,11 @@ module "vpc" {
   single_nat_gateway = var.vpc_single_nat_gateway
 
   # VPC DNS Parameters
+  #DNS Settings:
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-
+# Tagging:
   tags = local.common_tags
   vpc_tags = local.common_tags
 
