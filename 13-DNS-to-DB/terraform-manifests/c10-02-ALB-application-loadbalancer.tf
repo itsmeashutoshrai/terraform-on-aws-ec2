@@ -220,4 +220,76 @@ resource "aws_lb_target_group_attachment" "mytg3" {
   port             = 8080
 }
 
+/*In the context of the provided Terraform code, the healthy_threshold is a parameter within the health_check block of each target group (mytg1, mytg2, and mytg3).
 
+The healthy_threshold specifies the number of consecutive successful health checks that must occur before considering an instance healthy. In other words, it's the number of times the health check must pass before the instance is considered healthy and ready to receive traffic.
+
+In this specific code, the healthy_threshold is set to 3 for all three target groups. This means that if the health check passes three consecutive times, the instance will be considered healthy and ready to receive traffic.
+
+Here's a breakdown of the health check process:
+
+The health check is performed at the specified interval (30 seconds in this case).
+If the health check passes, the instance is considered healthy for that interval.
+If the health check passes for healthy_threshold consecutive intervals (3 in this case), the instance is considered healthy and ready to receive traffic.
+If the health check fails, the instance is considered unhealthy and will not receive traffic until it passes the healthy_threshold number of consecutive health checks.
+By setting the healthy_threshold to a value greater than 1, you can ensure that an instance is not considered healthy until it has consistently passed multiple health checks, which can help prevent false positives or temporary issues from affecting the instance's health status.
+
+
+and unhealthy
+
+
+In the context of the provided Terraform code, the unhealthy_threshold is a parameter within the health_check block of each target group (mytg1, mytg2, and mytg3).
+
+The unhealthy_threshold specifies the number of consecutive failed health checks that must occur before considering an instance unhealthy. In other words, it's the number of times the health check must fail before the instance is considered unhealthy and will not receive traffic.
+
+In this specific code, the unhealthy_threshold is set to 3 for all three target groups. This means that if the health check fails three consecutive times, the instance will be considered unhealthy and will not receive traffic until it passes the healthy_threshold number of consecutive health checks.
+
+Here's a breakdown of the health check process:
+
+The health check is performed at the specified interval (30 seconds in this case).
+If the health check passes, the instance is considered healthy for that interval.
+If the health check passes for healthy_threshold consecutive intervals (3 in this case), the instance is considered healthy and ready to receive traffic.
+If the health check fails, the instance is considered unhealthy and will not receive traffic until it passes the healthy_threshold number of consecutive health checks.
+If the health check fails for unhealthy_threshold consecutive intervals (3 in this case), the instance is considered unhealthy and will not receive traffic.
+By setting the unhealthy_threshold to a value greater than 1, you can ensure that an instance is not considered unhealthy until it has consistently failed multiple health checks, which can help prevent false positives or temporary issues from affecting the instance's health status.
+
+Let's say the module.ec2_private_app1 outputs a map like this:
+
+{
+  "instance1" = {id = "i-1234567890abcdef0", ip = "10.0.1.10"},
+  "instance2" = {id = "i-0987654321fedcba0", ip = "10.0.1.11"},
+  "instance3" = {id = "i-abcdef1234567890", ip = "10.0.1.12"}
+}
+
+Copy
+
+Apply
+
+Then the for_each expression:
+
+for_each = {for k,v in module.ec2_private_app1: k => v}
+
+Copy
+
+Apply
+
+terraform-on-aws-ec2\13-DNS-to-DB\terraform-manifests\c10-02-ALB-application-loadbalancer.tf
+Would effectively create three instances of the resource, one for each key-value pair in the map. You could then use each.key and each.value within the resource block to access the specific data for each instance.
+
+For example, if this was part of an ALB target group attachment, it might look like:
+
+resource "aws_lb_target_group_attachment" "this" {
+  for_each = {for k,v in module.ec2_private_app1: k => v}
+  
+  target_group_arn = aws_lb_target_group.this.arn
+  target_id        = each.value.id
+  port             = 80
+}
+
+Copy
+
+Apply
+
+This would create three target group attachments, one for each EC2 instance, using the instance IDs from the module output.
+
+This approach is very powerful for creating multiple similar resources dynamically based on the output of other resources or modules in your Terraform configuration.*/
