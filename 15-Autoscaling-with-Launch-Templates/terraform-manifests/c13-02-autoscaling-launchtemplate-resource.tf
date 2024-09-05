@@ -40,4 +40,6 @@ resource "aws_launch_template" "my_launch_template" {
 Instance store volumes: These are physically attached to the host computer where the EC2 instance runs. They provide temporary block-level storage.
 
 EBS (Elastic Block Store) volumes: These are network-attached storage devices that persist independently from the life of an instance.
+
+EBS optimization provides dedicated throughput between Amazon EC2 and Amazon EBS, which can significantly improve the performance of EBS volumes. By setting this to true, you're ensuring that the EC2 instances launched by your Auto Scaling group will have optimized EBS performance.This is a good practice when you need consistent and predictable storage performance for your applications, especially those that are I/O intensive.
 */
