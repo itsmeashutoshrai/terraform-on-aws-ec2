@@ -19,5 +19,15 @@ resource "aws_autoscaling_schedule" "decrease_capacity_5pm" {
   recurrence             = "00 21 * * *"
   autoscaling_group_name = aws_autoscaling_group.my_asg.id
 }
+/*Certainly! The recurrence parameter in the scheduled actions is set using a cron expression. Here's what you need to know about the recurrence settings in the provided code:
 
+For the "increase_capacity_7am" action: recurrence = "00 09 * * *" This means it will run at 09:00 UTC every day.
+
+For the "decrease_capacity_5pm" action: recurrence = "00 21 * * *" This means it will run at 21:00 UTC every day.
+
+These cron expressions follow the format: "minute hour day_of_month month day_of_week". The asterisks (*) indicate that the action will occur regardless of the day of the month, month, or day of the week.
+
+This setup ensures that the scaling actions occur daily at the specified times, allowing for consistent capacity management based on expected traffic patterns.
+
+*/
 
