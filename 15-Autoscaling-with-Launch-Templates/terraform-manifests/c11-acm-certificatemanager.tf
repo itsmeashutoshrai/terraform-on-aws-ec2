@@ -5,7 +5,7 @@ module "acm" {
   #version = "3.0.0"
   version = "5.0.0"  
 
-  domain_name  = trimsuffix(data.aws_route53_zone.mydomain.name, ".")
+  domain_name  = trimsuffix(data.aws_route53_zone.mydomain.name, ".") 
   zone_id      = data.aws_route53_zone.mydomain.zone_id 
   subject_alternative_names = [
     "*.devopsincloud.com"
@@ -33,4 +33,34 @@ They contain resource records (like A, CNAME, MX records) for a domain and its s
 Each zone has a unique identifier (the zone_id in AWS Route 53).
 Zones allow for delegated management of different parts of a domain hierarchy.
 In AWS, hosted zones can be public (accessible on the internet) or private (accessible only within specified VPCs).
-The zone_id referenced in the provided code is used to link the ACM certificate with the correct DNS zone, enabling automated DNS validation and renewal processes for SSL/TLS certificates.*/
+The zone_id referenced in the provided code is used to link the ACM certificate with the correct DNS zone, enabling automated DNS validation and renewal processes for SSL/TLS certificates.
+
+
+Certainly! Here's an example of using the `trimsuffix` function in Terraform:
+
+Let's say you have a domain name with a trailing period, and you want to remove that period for further processing. Here's how you can do it:
+
+```hcl
+data "aws_route53_zone" "mydomain" {
+  name = "example.com."
+}
+
+output "domain_name" {
+  value = trimsuffix(data.aws_route53_zone.mydomain.name, ".")
+}
+```
+
+In this example:
+- The `aws_route53_zone` data source fetches the details of the Route 53 hosted zone for `example.com.`.
+- The `trimsuffix` function removes the trailing period from the domain name, resulting in `example.com`.
+
+When you run this Terraform configuration, the output will be:
+
+```
+domain_name = "example.com"
+```
+
+This is useful when you need a clean domain name without the trailing period for other configurations or integrations.
+
+The trimsuffix function removes the trailing period from the domain name, resulting in example.com
+*/
