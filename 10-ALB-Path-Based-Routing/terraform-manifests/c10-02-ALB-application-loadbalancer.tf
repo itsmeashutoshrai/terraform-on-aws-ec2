@@ -207,5 +207,5 @@ mytg1 attaches instances from module.ec2_private_app1 to the mytg1 target group.
 mytg2 attaches instances from module.ec2_private_app2 to the mytg2 target group.
 Both attachments are set to use port 80 for traffic forwarding.
 By using the for_each construct, Terraform efficiently creates multiple attachments, ensuring that each EC2 instance in the specified module is correctly associated with the appropriate target group.
-/*
+*/
 
